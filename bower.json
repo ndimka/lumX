@@ -14,7 +14,8 @@
     "license": "MIT",
     "main": [
         "dist/lumx.css",
-        "dist/lumx.js"
+        "dist/lumx.js",
+        "dist/fonts/*"
     ],
     "repository":
     {
