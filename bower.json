@@ -47,7 +47,7 @@
         "velocity": "latest",
         "moment": "latest",
         "bourbon": "latest",
-        "mdi": "latest"
+        "shilon5/mdi": "latest"
     },
     "devDependencies":
     {
