@@ -34,6 +34,7 @@ $RECYCLE.BIN/
 /build
 /dist
 *.css.map
+*.iml
 
 # Codekit
 config.codekit
