@@ -47,8 +47,7 @@
         "jquery": "latest",
         "velocity": "latest",
         "moment": "latest",
-        "bourbon": "latest",
-        "shilon5/mdi": "latest"
+        "bourbon": "latest"
     },
     "devDependencies":
     {
