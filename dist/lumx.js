@@ -2627,6 +2627,167 @@
     'use strict';
 
     angular
+        .module('lumx.search-filter')
+        .directive('lxSearchFilter', lxSearchFilter);
+
+    function lxSearchFilter()
+    {
+        return {
+            restrict: 'E',
+            templateUrl: 'search-filter.html',
+            scope:
+            {
+                closed: '=?lxClosed',
+                color: '@?lxColor',
+                width: '@?lxWidth'
+            },
+            link: link,
+            controller: LxSearchFilterController,
+            controllerAs: 'lxSearchFilter',
+            bindToController: true,
+            replace: true,
+            transclude: true
+        };
+
+        function link(scope, element, attrs, ctrl, transclude)
+        {
+            var input;
+
+            attrs.$observe('lxWidth', function(newWidth)
+            {
+                if (angular.isDefined(scope.lxSearchFilter.closed) && scope.lxSearchFilter.closed)
+                {
+                    element.find('.search-filter__container').css('width', newWidth);
+                }
+            });
+
+            transclude(function()
+            {
+                input = element.find('input');
+
+                ctrl.setInput(input);
+                ctrl.setModel(input.data('$ngModelController'));
+
+                input.on('blur', ctrl.blurInput);
+            });
+
+            scope.$on('$destroy', function()
+            {
+                input.off();
+            });
+        }
+    }
+
+    LxSearchFilterController.$inject = ['$element'];
+
+    function LxSearchFilterController($element)
+    {
+        var lxSearchFilter = this;
+        var input;
+        var modelController;
+
+        lxSearchFilter.blurInput = blurInput;
+        lxSearchFilter.clearInput = clearInput;
+        lxSearchFilter.getClass = getClass;
+        lxSearchFilter.openInput = openInput;
+        lxSearchFilter.setInput = setInput;
+        lxSearchFilter.setModel = setModel;
+
+        lxSearchFilter.color = angular.isDefined(lxSearchFilter.color) ? lxSearchFilter.color : 'black';
+
+        ////////////
+
+        function blurInput()
+        {
+            if (angular.isDefined(lxSearchFilter.closed) && lxSearchFilter.closed && !input.val())
+            {
+                $element.velocity(
+                {
+                    width: 40
+                },
+                {
+                    duration: 400,
+                    easing: 'easeOutQuint',
+                    queue: false
+                });
+            }
+        }
+
+        function clearInput()
+        {
+            modelController.$setViewValue(undefined);
+            modelController.$render();
+
+            input.focus();
+        }
+
+        function getClass()
+        {
+            var searchFilterClass = [];
+
+            if (angular.isUndefined(lxSearchFilter.closed) || !lxSearchFilter.closed)
+            {
+                searchFilterClass.push('search-filter--opened-mode');
+            }
+
+            if (angular.isDefined(lxSearchFilter.closed) && lxSearchFilter.closed)
+            {
+                searchFilterClass.push('search-filter--closed-mode');
+            }
+
+            if (input.val())
+            {
+                searchFilterClass.push('search-filter--has-clear-button');
+            }
+
+            if (angular.isDefined(lxSearchFilter.color))
+            {
+                searchFilterClass.push('search-filter--' + lxSearchFilter.color);
+            }
+
+            return searchFilterClass;
+        }
+
+        function openInput()
+        {
+            if (angular.isDefined(lxSearchFilter.closed) && lxSearchFilter.closed)
+            {
+                $element.velocity(
+                {
+                    width: angular.isDefined(lxSearchFilter.width) ? lxSearchFilter.width : 240
+                },
+                {
+                    duration: 400,
+                    easing: 'easeOutQuint',
+                    queue: false,
+                    complete: function()
+                    {
+                        input.focus();
+                    }
+                });
+            }
+            else
+            {
+                input.focus();
+            }
+        }
+
+        function setInput(_input)
+        {
+            input = _input;
+        }
+
+        function setModel(_modelControler)
+        {
+            modelController = _modelControler;
+        }
+    }
+})();
+(function()
+{
+    'use strict';
+
+    angular
         .module('lumx.select')
         .filter('filterChoices', filterChoices)
         .directive('lxSelect', lxSelect)
@@ -3176,167 +3337,6 @@
     }
 })();
 
-(function()
-{
-    'use strict';
-
-    angular
-        .module('lumx.search-filter')
-        .directive('lxSearchFilter', lxSearchFilter);
-
-    function lxSearchFilter()
-    {
-        return {
-            restrict: 'E',
-            templateUrl: 'search-filter.html',
-            scope:
-            {
-                closed: '=?lxClosed',
-                color: '@?lxColor',
-                width: '@?lxWidth'
-            },
-            link: link,
-            controller: LxSearchFilterController,
-            controllerAs: 'lxSearchFilter',
-            bindToController: true,
-            replace: true,
-            transclude: true
-        };
-
-        function link(scope, element, attrs, ctrl, transclude)
-        {
-            var input;
-
-            attrs.$observe('lxWidth', function(newWidth)
-            {
-                if (angular.isDefined(scope.lxSearchFilter.closed) && scope.lxSearchFilter.closed)
-                {
-                    element.find('.search-filter__container').css('width', newWidth);
-                }
-            });
-
-            transclude(function()
-            {
-                input = element.find('input');
-
-                ctrl.setInput(input);
-                ctrl.setModel(input.data('$ngModelController'));
-
-                input.on('blur', ctrl.blurInput);
-            });
-
-            scope.$on('$destroy', function()
-            {
-                input.off();
-            });
-        }
-    }
-
-    LxSearchFilterController.$inject = ['$element'];
-
-    function LxSearchFilterController($element)
-    {
-        var lxSearchFilter = this;
-        var input;
-        var modelController;
-
-        lxSearchFilter.blurInput = blurInput;
-        lxSearchFilter.clearInput = clearInput;
-        lxSearchFilter.getClass = getClass;
-        lxSearchFilter.openInput = openInput;
-        lxSearchFilter.setInput = setInput;
-        lxSearchFilter.setModel = setModel;
-
-        lxSearchFilter.color = angular.isDefined(lxSearchFilter.color) ? lxSearchFilter.color : 'black';
-
-        ////////////
-
-        function blurInput()
-        {
-            if (angular.isDefined(lxSearchFilter.closed) && lxSearchFilter.closed && !input.val())
-            {
-                $element.velocity(
-                {
-                    width: 40
-                },
-                {
-                    duration: 400,
-                    easing: 'easeOutQuint',
-                    queue: false
-                });
-            }
-        }
-
-        function clearInput()
-        {
-            modelController.$setViewValue(undefined);
-            modelController.$render();
-
-            input.focus();
-        }
-
-        function getClass()
-        {
-            var searchFilterClass = [];
-
-            if (angular.isUndefined(lxSearchFilter.closed) || !lxSearchFilter.closed)
-            {
-                searchFilterClass.push('search-filter--opened-mode');
-            }
-
-            if (angular.isDefined(lxSearchFilter.closed) && lxSearchFilter.closed)
-            {
-                searchFilterClass.push('search-filter--closed-mode');
-            }
-
-            if (input.val())
-            {
-                searchFilterClass.push('search-filter--has-clear-button');
-            }
-
-            if (angular.isDefined(lxSearchFilter.color))
-            {
-                searchFilterClass.push('search-filter--' + lxSearchFilter.color);
-            }
-
-            return searchFilterClass;
-        }
-
-        function openInput()
-        {
-            if (angular.isDefined(lxSearchFilter.closed) && lxSearchFilter.closed)
-            {
-                $element.velocity(
-                {
-                    width: angular.isDefined(lxSearchFilter.width) ? lxSearchFilter.width : 240
-                },
-                {
-                    duration: 400,
-                    easing: 'easeOutQuint',
-                    queue: false,
-                    complete: function()
-                    {
-                        input.focus();
-                    }
-                });
-            }
-            else
-            {
-                input.focus();
-            }
-        }
-
-        function setInput(_input)
-        {
-            input = _input;
-        }
-
-        function setModel(_modelControler)
-        {
-            modelController = _modelControler;
-        }
-    }
-})();
 (function()
 {
     'use strict';
@@ -4494,12 +4494,12 @@ angular.module("lumx.progress").run(['$templateCache', function(a) { a.put('prog
     '</div>\n' +
     '');
 	 }]);
-angular.module("lumx.button").run(['$templateCache', function(a) { a.put('', '<a ng-transclude lx-ripple></a>\n' +
+angular.module("lumx.button").run(['$templateCache', function(a) { a.put('link.html', '<a ng-transclude lx-ripple></a>\n' +
     '');
-	a.put('', '<button ng-transclude lx-ripple></button>\n' +
+	a.put('button.html', '<button ng-transclude lx-ripple></button>\n' +
     '');
 	 }]);
-angular.module("lumx.checkbox").run(['$templateCache', function(a) { a.put('', '<div class="checkbox checkbox--{{ lxCheckbox.lxColor }}">\n' +
+angular.module("lumx.checkbox").run(['$templateCache', function(a) { a.put('checkbox.html', '<div class="checkbox checkbox--{{ lxCheckbox.lxColor }}">\n' +
     '    <input id="{{ lxCheckbox.getCheckboxId() }}"\n' +
     '           type="checkbox"\n' +
     '           class="checkbox__input"\n' +
@@ -4514,14 +4514,14 @@ angular.module("lumx.checkbox").run(['$templateCache', function(a) { a.put('', '
     '    <ng-transclude-replace ng-if="lxCheckbox.getCheckboxHasChildren()"></ng-transclude-replace>\n' +
     '</div>\n' +
     '');
-	a.put('', '<label for="{{ lxCheckboxLabel.getCheckboxId() }}" class="checkbox__label" ng-transclude></label>\n' +
+	a.put('checkbox-label.html', '<label for="{{ lxCheckboxLabel.getCheckboxId() }}" class="checkbox__label" ng-transclude></label>\n' +
     '');
-	a.put('', '<span class="checkbox__help" ng-transclude></span>\n' +
+	a.put('checkbox-help.html', '<span class="checkbox__help" ng-transclude></span>\n' +
     '');
 	 }]);
-angular.module("lumx.radio-button").run(['$templateCache', function(a) { a.put('', '<div class="radio-group" ng-transclude></div>\n' +
+angular.module("lumx.radio-button").run(['$templateCache', function(a) { a.put('radio-group.html', '<div class="radio-group" ng-transclude></div>\n' +
     '');
-	a.put('', '<div class="radio-button radio-button--{{ lxRadioButton.lxColor }}">\n' +
+	a.put('radio-button.html', '<div class="radio-button radio-button--{{ lxRadioButton.lxColor }}">\n' +
     '    <input id="{{ lxRadioButton.getRadioButtonId() }}"\n' +
     '           type="radio"\n' +
     '           class="radio-button__input"\n' +
@@ -4535,12 +4535,12 @@ angular.module("lumx.radio-button").run(['$templateCache', function(a) { a.put('
     '    <ng-transclude-replace ng-if="lxRadioButton.getRadioButtonHasChildren()"></ng-transclude-replace>\n' +
     '</div>\n' +
     '');
-	a.put('', '<label for="{{ lxRadioButtonLabel.getRadioButtonId() }}" class="radio-button__label" ng-transclude></label>\n' +
+	a.put('radio-button-label.html', '<label for="{{ lxRadioButtonLabel.getRadioButtonId() }}" class="radio-button__label" ng-transclude></label>\n' +
     '');
-	a.put('', '<span class="radio-button__help" ng-transclude></span>\n' +
+	a.put('radio-button-help.html', '<span class="radio-button__help" ng-transclude></span>\n' +
     '');
 	 }]);
-angular.module("lumx.switch").run(['$templateCache', function(a) { a.put('', '<div class="switch switch--{{ lxSwitch.lxColor }}">\n' +
+angular.module("lumx.switch").run(['$templateCache', function(a) { a.put('switch.html', '<div class="switch switch--{{ lxSwitch.lxColor }}">\n' +
     '    <input id="{{ lxSwitch.getSwitchId() }}"\n' +
     '           type="checkbox"\n' +
     '           class="switch__input"\n' +
@@ -4555,19 +4555,19 @@ angular.module("lumx.switch").run(['$templateCache', function(a) { a.put('', '<d
     '    <ng-transclude-replace ng-if="lxSwitch.getSwitchHasChildren()"></ng-transclude-replace>\n' +
     '</div>\n' +
     '');
-	a.put('', '<label for="{{ lxSwitchLabel.getSwitchId() }}" class="switch__label" ng-transclude></label>\n' +
+	a.put('switch-label.html', '<label for="{{ lxSwitchLabel.getSwitchId() }}" class="switch__label" ng-transclude></label>\n' +
     '');
-	a.put('', '<span class="switch__help" ng-transclude></span>\n' +
+	a.put('switch-help.html', '<span class="switch__help" ng-transclude></span>\n' +
     '');
 	 }]);
-angular.module("lumx.fab").run(['$templateCache', function(a) { a.put('', '<div class="fab">\n' +
+angular.module("lumx.fab").run(['$templateCache', function(a) { a.put('fab.html', '<div class="fab">\n' +
     '    <ng-transclude-replace></ng-transclude-replace>\n' +
     '</div>\n' +
     '');
-	a.put('', '<div class="fab__primary" ng-transclude></div>\n' +
+	a.put('fab-trigger.html', '<div class="fab__primary" ng-transclude></div>\n' +
     '');
-	a.put('', '<div class="fab__actions fab__actions--{{ parentCtrl.lxDirection }}" ng-transclude></div>\n' +
+	a.put('fab-actions.html', '<div class="fab__actions fab__actions--{{ parentCtrl.lxDirection }}" ng-transclude></div>\n' +
     '');
 	 }]);
-angular.module("lumx.icon").run(['$templateCache', function(a) { a.put('', '<i class="icon mdi" ng-class="lxIcon.getClass()"></i>');
+angular.module("lumx.icon").run(['$templateCache', function(a) { a.put('icon.html', '<i class="icon mdi" ng-class="lxIcon.getClass()"></i>');
 	 }]);

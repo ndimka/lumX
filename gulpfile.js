@@ -305,7 +305,7 @@ gulp.task('tpl:button', function()
         {
             output: 'button_template.js',
             moduleName: 'lumx.button',
-            strip: 'views/'
+            strip: path.normalize('views/')
         }))
         .pipe(gulp.dest('build/js/templates'));
 });
@@ -318,7 +318,7 @@ gulp.task('tpl:checkbox', function()
         {
             output: 'checkbox_template.js',
             moduleName: 'lumx.checkbox',
-            strip: 'views/'
+            strip: path.normalize('views/')
         }))
         .pipe(gulp.dest('build/js/templates'));
 });
@@ -331,7 +331,7 @@ gulp.task('tpl:radio-button', function()
         {
             output: 'radio-button_template.js',
             moduleName: 'lumx.radio-button',
-            strip: 'views/'
+            strip: path.normalize('views/')
         }))
         .pipe(gulp.dest('build/js/templates'));
 });
@@ -344,7 +344,7 @@ gulp.task('tpl:switch', function()
         {
             output: 'switch_template.js',
             moduleName: 'lumx.switch',
-            strip: 'views/'
+            strip: path.normalize('views/')
         }))
         .pipe(gulp.dest('build/js/templates'));
 });
@@ -357,7 +357,7 @@ gulp.task('tpl:fab', function()
         {
             output: 'fab_template.js',
             moduleName: 'lumx.fab',
-            strip: 'views/'
+            strip: path.normalize('views/')
         }))
         .pipe(gulp.dest('build/js/templates'));
 });
@@ -370,7 +370,7 @@ gulp.task('tpl:icon', function()
         {
             output: 'icon_template.js',
             moduleName: 'lumx.icon',
-            strip: 'views/'
+            strip: path.normalize('views/')
         }))
         .pipe(gulp.dest('build/js/templates'));
 });
