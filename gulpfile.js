@@ -178,13 +178,13 @@ gulp.task('dist:css', ['scss:paths'], function()
         {
             includePaths: ['libs/bourbon/app/assets/stylesheets/', 'libs/mdi/scss/']
         }))
-        .pipe(plugins.replace(/\.\.\/fonts/g, './fonts'))
+        //.pipe(plugins.replace(/\.\.\/fonts/g, './fonts'))
         .pipe(plugins.minifyCss(
         {
             keepSpecialComments: 0
         }))
         .pipe(plugins.insert.prepend('/*\n LumX ' + options.version + '\n (c) 2014-' + new Date().getFullYear() + ' LumApps http://ui.lumapps.com\n License: MIT\n*/\n'))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('dist/css'));
 });
 
 gulp.task('dist:fonts', function()

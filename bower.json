@@ -13,7 +13,7 @@
     ],
     "license": "MIT",
     "main": [
-        "dist/lumx.css",
+        "dist/css/lumx.css",
         "dist/lumx.js",
         "dist/fonts/*"
     ],
