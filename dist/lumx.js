@@ -4072,7 +4072,9 @@
             scope:
             {
                 tooltip: '@lxTooltip',
-                position: '@?lxTooltipPosition'
+                position: '@?lxTooltipPosition',
+                showDelay: '@?lxTooltipShowDelay',
+                hideDelay: '@?lxTooltipHideDelay'
             },
             link: link,
             controller: LxTooltipController,
@@ -4115,6 +4117,8 @@
         lxTooltip.showTooltip = showTooltip;
 
         lxTooltip.position = angular.isDefined(lxTooltip.position) ? lxTooltip.position : 'top';
+        lxTooltip.showDelay = isNaN(lxTooltip.showDelay) ? 0 : Number(lxTooltip.showDelay);
+        lxTooltip.hideDelay = isNaN(lxTooltip.hideDelay) ? 200 : Number(lxTooltip.hideDelay);
 
         $scope.$on('$destroy', function()
         {
@@ -4138,7 +4142,7 @@
                 timer1 = $timeout(function()
                 {
                     tooltip.remove();
-                }, 200);
+                }, lxTooltip.hideDelay);
             }
         }
 
@@ -4219,7 +4223,7 @@
             timer2 = $timeout(function()
             {
                 tooltip.addClass('tooltip--is-active');
-            });
+            }, lxTooltip.showDelay);
         }
     }
 })();
