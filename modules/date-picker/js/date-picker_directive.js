@@ -23,7 +23,8 @@
                 maxDate: '=?lxMaxDate',
                 ngModel: '=',
                 minDate: '=?lxMinDate',
-                locale: '@lxLocale'
+                locale: '@lxLocale',
+                header: '=?lxHeader'
             },
             link: link,
             controller: LxDatePickerController,
@@ -61,6 +62,7 @@
         var timer1;
         var timer2;
         var watcher;
+
 
         lxDatePicker.closeDatePicker = closeDatePicker;
         lxDatePicker.displayYearSelection = displayYearSelection;
@@ -150,6 +152,7 @@
             lxDatePicker.days = [];
 
             var previousDay = angular.copy(lxDatePicker.ngModelMoment).date(0);
+
             var firstDayOfMonth = angular.copy(lxDatePicker.ngModelMoment).date(1);
             var lastDayOfMonth = firstDayOfMonth.clone().endOf('month');
             var maxDays = lastDayOfMonth.date();
@@ -174,9 +177,15 @@
                     date.disabled = true;
                 }
 
-                if (angular.isDefined(lxDatePicker.maxDate) && date.toDate() > lxDatePicker.maxDate)
+                if (angular.isDefined(lxDatePicker.maxDate) )
                 {
-                    date.disabled = true;
+                    var d = date.toDate();
+                    d.setHours(0);
+                    d.setMinutes(0);
+                    if ( d > lxDatePicker.maxDate) {
+
+                        date.disabled = true;
+                    }
                 }
 
                 lxDatePicker.days.push(date);
