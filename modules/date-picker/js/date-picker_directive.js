@@ -240,6 +240,7 @@
         function openDatePicker()
         {
             LxDatePickerService.open(lxDatePicker.pickerId);
+            init();
         }
 
         function previousMonth()
