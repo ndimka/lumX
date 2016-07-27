@@ -8,7 +8,7 @@
     max-width: 300px;
     padding: $base-spacing-unit * 2 $base-spacing-unit * 3;
     border-radius: $base-round;
-    background-color: #323232;
+    background-color: #c4ced4;
     cursor: pointer;
     @include transform(translateY(100%));
     @include transition-property(margin-bottom transform);
@@ -35,8 +35,8 @@
     // Notification content
     .notification__content {
         display: block;
-        @include font-size(14px);
-        color: $white-1;
+        @include font-size(16px);
+        color: #727273;
         line-height: 20px;
     }
 
