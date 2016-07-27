@@ -7,8 +7,8 @@
     @include position(fixed, null $base-spacing-unit * 3 0 null);
     max-width: 300px;
     padding: $base-spacing-unit * 2 $base-spacing-unit * 3;
-    border-radius: $base-round;
-    background-color: #c4ced4;
+    /*border-radius: $base-round;*/
+    background-color: #F6E7A2;
     cursor: pointer;
     @include transform(translateY(100%));
     @include transition-property(margin-bottom transform);
@@ -17,7 +17,7 @@
 }
 
 .notification--is-shown {
-    @include transform(translateY(-24px));
+    @include transform(translateY(-40px));
 }
 
     // Notification content / icon
@@ -36,7 +36,7 @@
     .notification__content {
         display: block;
         @include font-size(16px);
-        color: #727273;
+        color: #666;
         line-height: 20px;
     }
 
@@ -47,7 +47,7 @@
     // Notification icon
     .notification__icon {
         @include position(absolute, $base-spacing-unit * 2 null null $base-spacing-unit * 3);
-        @include font-size(14px);
+        @include font-size(20px);
         color: $white-1;
         line-height: 20px !important;
     }
