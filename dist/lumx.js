@@ -4043,7 +4043,7 @@
 
             if (input.selector === 'textarea')
             {
-                timer2 = $timeout(updateTextareaHeight);
+                //timer2 = $timeout(updateTextareaHeight);
             }
         }
 
