@@ -83,7 +83,7 @@
     }
 
     .lx-select--is-active & {
-        @include transform(scale(0.75) translateY(0));
+        @include transform(scale(0.75) translateY(-2 * $base-spacing-unit));
     }
 
     .lx-select--theme-light & {
