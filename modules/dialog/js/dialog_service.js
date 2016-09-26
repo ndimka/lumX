@@ -51,6 +51,7 @@
 
             dialogFilter.removeClass('dialog-filter--is-shown');
             scopeMap[_dialogId].element.removeClass('dialog--is-shown');
+            scopeMap[_dialogId].element.remove();
 
             $timeout(function()
             {
