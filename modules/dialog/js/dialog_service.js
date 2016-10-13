@@ -6,9 +6,9 @@
         .module('lumx.dialog')
         .service('LxDialogService', LxDialogService);
 
-    LxDialogService.$inject = ['$interval', '$rootScope', '$timeout', '$window', 'LxDepthService', 'LxEventSchedulerService'];
+    LxDialogService.$inject = ['$interval', '$rootScope', '$timeout', '$window', '$q', 'LxDepthService', 'LxEventSchedulerService'];
 
-    function LxDialogService($interval, $rootScope, $timeout, $window, LxDepthService, LxEventSchedulerService)
+    function LxDialogService($interval, $rootScope, $timeout, $window, $q, LxDepthService, LxEventSchedulerService)
     {
         var service = this;
         var activeDialogId;
@@ -18,11 +18,34 @@
         var dialogScrollable;
         var idEventScheduler;
         var resizeDebounce;
+        var localsMap = {};
         var scopeMap = {};
+        var deferredMap = {};
         var windowHeight;
 
-        service.close = closeDialog;
-        service.open = openDialog;
+        service.cancel = function(_dialogId){
+            closeDialog(_dialogId);
+
+            deferredMap[_dialogId].reject();
+
+            delete localsMap[_dialogId];
+        };
+        service.close = function(_dialogId, result){
+            closeDialog(_dialogId);
+            deferredMap[_dialogId].resolve(result);
+
+            delete localsMap[_dialogId];
+        };
+        service.open = function(_dialogId, params){
+            localsMap[_dialogId] = params;
+            openDialog(_dialogId);
+            deferredMap[_dialogId] = $q.defer();
+
+            return deferredMap[_dialogId].promise;
+        };
+        service.locals = function(_dialogId){
+            return localsMap[_dialogId];
+        };
         service.registerScope = registerScope;
 
         ////////////

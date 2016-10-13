@@ -92,7 +92,7 @@
             {
                 element.on('click', function()
                 {
-                    LxDialogService.close(element.parents('.dialog').attr('id'));
+                    LxDialogService.cancel(element.parents('.dialog').attr('id'));
                 });
 
                 scope.$on('$destroy', function()
