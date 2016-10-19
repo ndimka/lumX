@@ -2874,6 +2874,8 @@
                 toFilter = choices;
             }
 
+            toFilter = toFilter.filter(function( it){ return !it.hidden; });
+
             return $filter('filter')(toFilter, textFilter);
         };
     }
@@ -2915,7 +2917,7 @@
 
         function link(scope, element, attrs)
         {
-            var backwardOneWay = ['customStyle'];
+            var backwardOneWay = ['customStyle', 'choicesClass'];
             var backwardTwoWay = ['allowClear', 'choices', 'error', 'loading', 'multiple', 'valid'];
 
             angular.forEach(backwardOneWay, function(attribute)
@@ -3014,6 +3016,10 @@
 
         function displayChoice(_choice)
         {
+            if ( _choice.hidden || _choice.alwaysHidden){
+                return;
+            }
+
             var choiceScope = {
                 $choice: _choice
             };
@@ -3327,6 +3333,11 @@
 
         function toggleChoice(_choice, _event)
         {
+            if (_choice.disabled || _choice.alwaysDisabled) {
+                _event.stopPropagation();
+                return;
+            }
+
             if (lxSelectChoices.parentCtrl.multiple)
             {
                 _event.stopPropagation();
@@ -4376,7 +4387,7 @@ angular.module("lumx.select").run(['$templateCache', function(a) { a.put('select
     '    </div>\n' +
     '</div>\n' +
     '');
-	a.put('select-choices.html', '<lx-dropdown-menu class="lx-select-choices"\n' +
+	a.put('select-choices.html', '<lx-dropdown-menu class="lx-select-choices {{lxSelectChoices.parentCtrl.choicesClass}}"\n' +
     '                  ng-class="{ \'lx-select-choices--custom-style\': lxSelectChoices.parentCtrl.customStyle,\n' +
     '                              \'lx-select-choices--default-style\': !lxSelectChoices.parentCtrl.customStyle,\n' +
     '                              \'lx-select-choices--is-multiple\': lxSelectChoices.parentCtrl.multiple,\n' +
@@ -4398,6 +4409,7 @@ angular.module("lumx.select").run(['$templateCache', function(a) { a.put('select
     '\n' +
     '        <div ng-if="::!lxSelectChoices.isArray()">\n' +
     '            <li class="lx-select-choices__subheader"\n' +
+    '                ng-show="(children | filterChoices:lxSelectChoices.parentCtrl.filter:lxSelectChoices.filterModel).length > 0"\n' +
     '                ng-repeat-start="(subheader, children) in lxSelectChoices.parentCtrl.choices"\n' +
     '                ng-bind-html="::lxSelectChoices.parentCtrl.displaySubheader(subheader)"></li>\n' +
     '\n' +

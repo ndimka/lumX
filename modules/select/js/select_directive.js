@@ -40,6 +40,8 @@
                 toFilter = choices;
             }
 
+            toFilter = toFilter.filter(function( it){ return !it.hidden; });
+
             return $filter('filter')(toFilter, textFilter);
         };
     }
@@ -81,7 +83,7 @@
 
         function link(scope, element, attrs)
         {
-            var backwardOneWay = ['customStyle'];
+            var backwardOneWay = ['customStyle', 'choicesClass'];
             var backwardTwoWay = ['allowClear', 'choices', 'error', 'loading', 'multiple', 'valid'];
 
             angular.forEach(backwardOneWay, function(attribute)
@@ -180,6 +182,10 @@
 
         function displayChoice(_choice)
         {
+            if ( _choice.hidden || _choice.alwaysHidden){
+                return;
+            }
+
             var choiceScope = {
                 $choice: _choice
             };
@@ -493,6 +499,11 @@
 
         function toggleChoice(_choice, _event)
         {
+            if (_choice.disabled || _choice.alwaysDisabled) {
+                _event.stopPropagation();
+                return;
+            }
+
             if (lxSelectChoices.parentCtrl.multiple)
             {
                 _event.stopPropagation();
