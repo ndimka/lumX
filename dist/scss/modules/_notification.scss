@@ -42,7 +42,7 @@
     }
 
     .notification--has-icon .notification__content {
-        padding-left: $base-spacing-unit * 4;
+        padding-left: $base-spacing-unit * 4 + 20px;
     }
 
     // Notification icon
