@@ -1711,15 +1711,22 @@
         function link(scope, element)
         {
             var timer;
+            var input = element.find('input');
 
             element.on('click', function(_event)
             {
                 _event.stopPropagation();
             });
 
+            input.keyup(function(e) {
+                if (e.which === 40) { // Down key
+                    element.closest('.dropdown-menu').find('.lx-select-choices__choice')[0].focus();
+                }
+            });
+
             timer = $timeout(function()
             {
-                element.find('input').focus();
+                input.focus();
             }, 200);
 
             scope.$on('$destroy', function()
@@ -2590,6 +2597,92 @@
     'use strict';
 
     angular
+        .module('lumx.ripple')
+        .directive('lxRipple', lxRipple);
+
+    lxRipple.$inject = ['$timeout'];
+
+    function lxRipple($timeout)
+    {
+        return {
+            restrict: 'A',
+            link: link,
+        };
+
+        function link(scope, element, attrs)
+        {
+            var timer;
+
+            element
+                .css(
+                {
+                    position: 'relative',
+                    overflow: 'hidden'
+                })
+                .on('mousedown', function(e)
+                {
+                    var ripple;
+
+                    if (element.find('.ripple').length === 0)
+                    {
+                        ripple = angular.element('<span/>',
+                        {
+                            class: 'ripple'
+                        });
+
+                        if (attrs.lxRipple)
+                        {
+                            ripple.addClass('bgc-' + attrs.lxRipple);
+                        }
+
+                        element.prepend(ripple);
+                    }
+                    else
+                    {
+                        ripple = element.find('.ripple');
+                    }
+
+                    ripple.removeClass('ripple--is-animated');
+
+                    if (!ripple.height() && !ripple.width())
+                    {
+                        var diameter = Math.max(element.outerWidth(), element.outerHeight());
+
+                        ripple.css(
+                        {
+                            height: diameter,
+                            width: diameter
+                        });
+                    }
+
+                    var x = e.pageX - element.offset().left - ripple.width() / 2;
+                    var y = e.pageY - element.offset().top - ripple.height() / 2;
+
+                    ripple.css(
+                    {
+                        top: y + 'px',
+                        left: x + 'px'
+                    }).addClass('ripple--is-animated');
+
+                    timer = $timeout(function()
+                    {
+                        ripple.removeClass('ripple--is-animated');
+                    }, 651);
+                });
+
+            scope.$on('$destroy', function()
+            {
+                $timeout.cancel(timer);
+                element.off();
+            });
+        }
+    }
+})();
+(function()
+{
+    'use strict';
+
+    angular
         .module('lumx.search-filter')
         .directive('lxSearchFilter', lxSearchFilter);
 
@@ -2743,92 +2836,6 @@
         function setModel(_modelControler)
         {
             modelController = _modelControler;
-        }
-    }
-})();
-(function()
-{
-    'use strict';
-
-    angular
-        .module('lumx.ripple')
-        .directive('lxRipple', lxRipple);
-
-    lxRipple.$inject = ['$timeout'];
-
-    function lxRipple($timeout)
-    {
-        return {
-            restrict: 'A',
-            link: link,
-        };
-
-        function link(scope, element, attrs)
-        {
-            var timer;
-
-            element
-                .css(
-                {
-                    position: 'relative',
-                    overflow: 'hidden'
-                })
-                .on('mousedown', function(e)
-                {
-                    var ripple;
-
-                    if (element.find('.ripple').length === 0)
-                    {
-                        ripple = angular.element('<span/>',
-                        {
-                            class: 'ripple'
-                        });
-
-                        if (attrs.lxRipple)
-                        {
-                            ripple.addClass('bgc-' + attrs.lxRipple);
-                        }
-
-                        element.prepend(ripple);
-                    }
-                    else
-                    {
-                        ripple = element.find('.ripple');
-                    }
-
-                    ripple.removeClass('ripple--is-animated');
-
-                    if (!ripple.height() && !ripple.width())
-                    {
-                        var diameter = Math.max(element.outerWidth(), element.outerHeight());
-
-                        ripple.css(
-                        {
-                            height: diameter,
-                            width: diameter
-                        });
-                    }
-
-                    var x = e.pageX - element.offset().left - ripple.width() / 2;
-                    var y = e.pageY - element.offset().top - ripple.height() / 2;
-
-                    ripple.css(
-                    {
-                        top: y + 'px',
-                        left: x + 'px'
-                    }).addClass('ripple--is-animated');
-
-                    timer = $timeout(function()
-                    {
-                        ripple.removeClass('ripple--is-animated');
-                    }, 651);
-                });
-
-            scope.$on('$destroy', function()
-            {
-                $timeout.cancel(timer);
-                element.off();
-            });
         }
     }
 })();
@@ -3263,6 +3270,7 @@
         lxSelectChoices.setParentController = setParentController;
         lxSelectChoices.toggleChoice = toggleChoice;
         lxSelectChoices.updateFilter = updateFilter;
+        lxSelectChoices.onChoiceKeyDown = onChoiceKeyDown;
 
         lxSelectChoices.filterModel = undefined;
 
@@ -3350,6 +3358,32 @@
             else
             {
                 lxSelectChoices.parentCtrl.select(_choice);
+            }
+        }
+
+        function onChoiceKeyDown(_choice, _event)
+        {
+            if (_event.which === 40) { // Down key
+                _event.preventDefault();
+                var last = $(_event.target).parent().find('.lx-select-choices__choice').not('[disabled],.hidden').last().get(0);
+                if (_event.target !== last) {
+                    $(_event.target).nextAll('.lx-select-choices__choice').not('[disabled],.hidden').first().focus();
+                }
+            }
+            else if (_event.which === 38) { // Up key
+                _event.preventDefault();
+                var first = $(_event.target).parent().find('.lx-select-choices__choice').not('[disabled],.hidden').first().get(0);
+                if (_event.target === first) {
+                    $(_event.target).parent().siblings('.lx-select-choices__filter').find('input').focus();
+                }
+                else {
+                    $(_event.target).prevAll('.lx-select-choices__choice').not('[disabled],.hidden').first().focus();
+                }
+            }
+            else if (_event.which === 13) { // Enter key
+                $timeout(function() {
+                    $(_event.target).click();
+                });
             }
         }
 
@@ -4414,11 +4448,14 @@ angular.module("lumx.select").run(['$templateCache', function(a) { a.put('select
     '                ng-bind-html="::lxSelectChoices.parentCtrl.displaySubheader(subheader)"></li>\n' +
     '\n' +
     '            <li class="lx-select-choices__choice"\n' +
-    '                ng-class="{ \'lx-select-choices__choice--is-selected\': lxSelectChoices.isSelected(choice) }"\n' +
+    '                ng-class="{ \'lx-select-choices__choice--is-selected\': lxSelectChoices.isSelected(choice), hidden: choice.hidden || choice.alwaysHidden }"\n' +
     '                ng-repeat-end\n' +
     '                ng-repeat="choice in children | filterChoices:lxSelectChoices.parentCtrl.filter:lxSelectChoices.filterModel"\n' +
     '                ng-bind-html="::lxSelectChoices.parentCtrl.displayChoice(choice)"\n' +
-    '                ng-click="lxSelectChoices.toggleChoice(choice, $event)"></li>\n' +
+    '                ng-click="lxSelectChoices.toggleChoice(choice, $event)"\n' +
+    '                ng-keydown="lxSelectChoices.onChoiceKeyDown(choice, $event)"\n' +
+    '                ng-disabled="::choice.disabled || choice.alwaysDisabled"\n' +
+    '                tabindex="0"></li>\n' +
     '        </div>\n' +
     '\n' +
     '        <li class="lx-select-choices__subheader" ng-if="lxSelectChoices.parentCtrl.helper">\n' +
