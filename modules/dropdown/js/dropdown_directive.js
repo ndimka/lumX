@@ -438,15 +438,22 @@
         function link(scope, element)
         {
             var timer;
+            var input = element.find('input');
 
             element.on('click', function(_event)
             {
                 _event.stopPropagation();
             });
 
+            input.keyup(function(e) {
+                if (e.which === 40) { // Down key
+                    element.closest('.dropdown-menu').find('.lx-select-choices__choice')[0].focus();
+                }
+            });
+
             timer = $timeout(function()
             {
-                element.find('input').focus();
+                input.focus();
             }, 200);
 
             scope.$on('$destroy', function()
