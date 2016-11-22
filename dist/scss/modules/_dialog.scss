@@ -33,7 +33,7 @@ $dialog-margin: $base-spacing-unit * 4;
     @include position(fixed, $dialog-margin null null 50%);
     background-color: $white;
     opacity: 0;
-    @include z-depth(3);
+    @include z-depth(1);
     /*
     @include transform(translateY(-50px));
     */
@@ -45,6 +45,8 @@ $dialog-margin: $base-spacing-unit * 4;
 .dialog--alert {
     width: 400px;
     margin-left: -200px;
+    text-align: center;
+    background: whitesmoke;
 }
 
 .dialog--l {
