@@ -1074,8 +1074,11 @@
             $interval.cancel(dialogInterval);
 
             dialogFilter.removeClass('dialog-filter--is-shown');
-            scopeMap[_dialogId].element.removeClass('dialog--is-shown');
-            scopeMap[_dialogId].element.remove();
+
+            if (angular.isDefined(scopeMap[_dialogId])) {
+                scopeMap[_dialogId].element.removeClass('dialog--is-shown');
+                scopeMap[_dialogId].element.remove();
+            }
 
             $timeout(function()
             {
@@ -1085,15 +1088,17 @@
                 });
 
                 dialogFilter.remove();
-
-                scopeMap[_dialogId].element
-                    .hide()
-                    .removeClass('dialog--is-fixed')
-                    .appendTo(scopeMap[_dialogId].elementParent);
-
-                scopeMap[_dialogId].isOpen = false;
                 dialogHeight = undefined;
-                $rootScope.$broadcast('lx-dialog__close-end', _dialogId);
+
+                if ( angular.isDefined(scopeMap[_dialogId])) {
+                    scopeMap[_dialogId].element
+                        .hide()
+                        .removeClass('dialog--is-fixed')
+                        .appendTo(scopeMap[_dialogId].elementParent);
+
+                    scopeMap[_dialogId].isOpen = false;
+                    $rootScope.$broadcast('lx-dialog__close-end', _dialogId);
+                }
             }, 600);
         }
 
@@ -2597,92 +2602,6 @@
     'use strict';
 
     angular
-        .module('lumx.ripple')
-        .directive('lxRipple', lxRipple);
-
-    lxRipple.$inject = ['$timeout'];
-
-    function lxRipple($timeout)
-    {
-        return {
-            restrict: 'A',
-            link: link,
-        };
-
-        function link(scope, element, attrs)
-        {
-            var timer;
-
-            element
-                .css(
-                {
-                    position: 'relative',
-                    overflow: 'hidden'
-                })
-                .on('mousedown', function(e)
-                {
-                    var ripple;
-
-                    if (element.find('.ripple').length === 0)
-                    {
-                        ripple = angular.element('<span/>',
-                        {
-                            class: 'ripple'
-                        });
-
-                        if (attrs.lxRipple)
-                        {
-                            ripple.addClass('bgc-' + attrs.lxRipple);
-                        }
-
-                        element.prepend(ripple);
-                    }
-                    else
-                    {
-                        ripple = element.find('.ripple');
-                    }
-
-                    ripple.removeClass('ripple--is-animated');
-
-                    if (!ripple.height() && !ripple.width())
-                    {
-                        var diameter = Math.max(element.outerWidth(), element.outerHeight());
-
-                        ripple.css(
-                        {
-                            height: diameter,
-                            width: diameter
-                        });
-                    }
-
-                    var x = e.pageX - element.offset().left - ripple.width() / 2;
-                    var y = e.pageY - element.offset().top - ripple.height() / 2;
-
-                    ripple.css(
-                    {
-                        top: y + 'px',
-                        left: x + 'px'
-                    }).addClass('ripple--is-animated');
-
-                    timer = $timeout(function()
-                    {
-                        ripple.removeClass('ripple--is-animated');
-                    }, 651);
-                });
-
-            scope.$on('$destroy', function()
-            {
-                $timeout.cancel(timer);
-                element.off();
-            });
-        }
-    }
-})();
-(function()
-{
-    'use strict';
-
-    angular
         .module('lumx.search-filter')
         .directive('lxSearchFilter', lxSearchFilter);
 
@@ -2836,6 +2755,92 @@
         function setModel(_modelControler)
         {
             modelController = _modelControler;
+        }
+    }
+})();
+(function()
+{
+    'use strict';
+
+    angular
+        .module('lumx.ripple')
+        .directive('lxRipple', lxRipple);
+
+    lxRipple.$inject = ['$timeout'];
+
+    function lxRipple($timeout)
+    {
+        return {
+            restrict: 'A',
+            link: link,
+        };
+
+        function link(scope, element, attrs)
+        {
+            var timer;
+
+            element
+                .css(
+                {
+                    position: 'relative',
+                    overflow: 'hidden'
+                })
+                .on('mousedown', function(e)
+                {
+                    var ripple;
+
+                    if (element.find('.ripple').length === 0)
+                    {
+                        ripple = angular.element('<span/>',
+                        {
+                            class: 'ripple'
+                        });
+
+                        if (attrs.lxRipple)
+                        {
+                            ripple.addClass('bgc-' + attrs.lxRipple);
+                        }
+
+                        element.prepend(ripple);
+                    }
+                    else
+                    {
+                        ripple = element.find('.ripple');
+                    }
+
+                    ripple.removeClass('ripple--is-animated');
+
+                    if (!ripple.height() && !ripple.width())
+                    {
+                        var diameter = Math.max(element.outerWidth(), element.outerHeight());
+
+                        ripple.css(
+                        {
+                            height: diameter,
+                            width: diameter
+                        });
+                    }
+
+                    var x = e.pageX - element.offset().left - ripple.width() / 2;
+                    var y = e.pageY - element.offset().top - ripple.height() / 2;
+
+                    ripple.css(
+                    {
+                        top: y + 'px',
+                        left: x + 'px'
+                    }).addClass('ripple--is-animated');
+
+                    timer = $timeout(function()
+                    {
+                        ripple.removeClass('ripple--is-animated');
+                    }, 651);
+                });
+
+            scope.$on('$destroy', function()
+            {
+                $timeout.cancel(timer);
+                element.off();
+            });
         }
     }
 })();

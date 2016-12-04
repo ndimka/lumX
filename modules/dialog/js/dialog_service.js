@@ -73,8 +73,11 @@
             $interval.cancel(dialogInterval);
 
             dialogFilter.removeClass('dialog-filter--is-shown');
-            scopeMap[_dialogId].element.removeClass('dialog--is-shown');
-            scopeMap[_dialogId].element.remove();
+
+            if (angular.isDefined(scopeMap[_dialogId])) {
+                scopeMap[_dialogId].element.removeClass('dialog--is-shown');
+                scopeMap[_dialogId].element.remove();
+            }
 
             $timeout(function()
             {
@@ -84,15 +87,17 @@
                 });
 
                 dialogFilter.remove();
-
-                scopeMap[_dialogId].element
-                    .hide()
-                    .removeClass('dialog--is-fixed')
-                    .appendTo(scopeMap[_dialogId].elementParent);
-
-                scopeMap[_dialogId].isOpen = false;
                 dialogHeight = undefined;
-                $rootScope.$broadcast('lx-dialog__close-end', _dialogId);
+
+                if ( angular.isDefined(scopeMap[_dialogId])) {
+                    scopeMap[_dialogId].element
+                        .hide()
+                        .removeClass('dialog--is-fixed')
+                        .appendTo(scopeMap[_dialogId].elementParent);
+
+                    scopeMap[_dialogId].isOpen = false;
+                    $rootScope.$broadcast('lx-dialog__close-end', _dialogId);
+                }
             }, 600);
         }
 
