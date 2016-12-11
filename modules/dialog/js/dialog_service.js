@@ -1,5 +1,4 @@
-(function()
-{
+(function () {
     'use strict';
 
     angular
@@ -8,8 +7,7 @@
 
     LxDialogService.$inject = ['$interval', '$rootScope', '$timeout', '$window', '$q', 'LxDepthService', 'LxEventSchedulerService'];
 
-    function LxDialogService($interval, $rootScope, $timeout, $window, $q, LxDepthService, LxEventSchedulerService)
-    {
+    function LxDialogService($interval, $rootScope, $timeout, $window, $q, LxDepthService, LxEventSchedulerService) {
         var service = this;
         var activeDialogId;
         var dialogFilter;
@@ -23,37 +21,35 @@
         var deferredMap = {};
         var windowHeight;
 
-        service.cancel = function(_dialogId){
+        service.cancel = function (_dialogId) {
             closeDialog(_dialogId);
 
             deferredMap[_dialogId].reject();
 
             delete localsMap[_dialogId];
         };
-        service.close = function(_dialogId, result){
+        service.close = function (_dialogId, result) {
             closeDialog(_dialogId);
             deferredMap[_dialogId].resolve(result);
 
             delete localsMap[_dialogId];
         };
-        service.open = function(_dialogId, params){
+        service.open = function (_dialogId, params) {
             localsMap[_dialogId] = params;
             openDialog(_dialogId);
             deferredMap[_dialogId] = $q.defer();
 
             return deferredMap[_dialogId].promise;
         };
-        service.locals = function(_dialogId){
+        service.locals = function (_dialogId) {
             return localsMap[_dialogId];
         };
         service.registerScope = registerScope;
 
         ////////////
 
-        function closeDialog(_dialogId)
-        {
-            if (angular.isDefined(idEventScheduler))
-            {
+        function closeDialog(_dialogId) {
+            if (angular.isDefined(idEventScheduler)) {
                 LxEventSchedulerService.unregister(idEventScheduler);
                 idEventScheduler = undefined;
             }
@@ -65,8 +61,7 @@
 
             $rootScope.$broadcast('lx-dialog__close-start', _dialogId);
 
-            if (resizeDebounce)
-            {
+            if (resizeDebounce) {
                 $timeout.cancel(resizeDebounce);
             }
 
@@ -79,17 +74,17 @@
                 scopeMap[_dialogId].element.remove();
             }
 
-            $timeout(function()
-            {
+            $timeout(function () {
                 angular.element('body').css(
-                {
-                    overflow: 'visible'
-                });
+                    {
+                        overflow: 'visible'
+                    });
 
                 dialogFilter.remove();
+                dialogFilter = undefined;
                 dialogHeight = undefined;
 
-                if ( angular.isDefined(scopeMap[_dialogId])) {
+                if (angular.isDefined(scopeMap[_dialogId])) {
                     scopeMap[_dialogId].element
                         .hide()
                         .removeClass('dialog--is-fixed')
@@ -101,48 +96,42 @@
             }, 600);
         }
 
-        function checkDialogHeight(_dialogId)
-        {
+        function checkDialogHeight(_dialogId) {
             var dialog = scopeMap[_dialogId].element;
             var dialogHeader = dialog.find('.dialog__header');
             var dialogContent = dialog.find('.dialog__content');
             var dialogFooter = dialog.find('.dialog__footer');
 
-            if (!dialogFooter.length)
-            {
+            if (!dialogFooter.length) {
                 dialogFooter = dialog.find('.dialog__actions');
             }
 
-            if (angular.isUndefined(dialogHeader))
-            {
+            if (angular.isUndefined(dialogHeader)) {
                 return;
             }
 
             var heightToCheck = 60 + dialogHeader.outerHeight() + dialogContent.outerHeight() + dialogFooter.outerHeight();
 
-            if (dialogHeight === heightToCheck && windowHeight === $window.innerHeight)
-            {
+            if (dialogHeight === heightToCheck && windowHeight === $window.innerHeight) {
                 return;
             }
 
             dialogHeight = heightToCheck;
             windowHeight = $window.innerHeight;
 
-            if (heightToCheck >= $window.innerHeight)
-            {
+            if (heightToCheck >= $window.innerHeight) {
                 dialog.addClass('dialog--is-fixed');
 
                 dialogScrollable
                     .css(
-                    {
-                        top: dialogHeader.outerHeight(),
-                        bottom: dialogFooter.outerHeight()
-                    })
+                        {
+                            top: dialogHeader.outerHeight(),
+                            bottom: dialogFooter.outerHeight()
+                        })
                     .off('scroll', checkScrollEnd)
                     .on('scroll', checkScrollEnd);
             }
-            else
-            {
+            else {
                 dialog.removeClass('dialog--is-fixed');
 
                 dialogScrollable
@@ -151,80 +140,71 @@
             }
         }
 
-        function checkDialogHeightOnResize()
-        {
-            if (angular.isDefined(activeDialogId))
-            {
-                if (resizeDebounce)
-                {
+        function checkDialogHeightOnResize() {
+            if (angular.isDefined(activeDialogId)) {
+                if (resizeDebounce) {
                     $timeout.cancel(resizeDebounce);
                 }
 
-                resizeDebounce = $timeout(function()
-                {
+                resizeDebounce = $timeout(function () {
                     checkDialogHeight(activeDialogId);
                 }, 200);
             }
         }
 
-        function checkScrollEnd()
-        {
-            if (angular.isDefined(scopeMap[activeDialogId]))
-            {
-                if (dialogScrollable.scrollTop() + dialogScrollable.innerHeight() >= dialogScrollable[0].scrollHeight)
-                {
+        function checkScrollEnd() {
+            if (angular.isDefined(scopeMap[activeDialogId])) {
+                if (dialogScrollable.scrollTop() + dialogScrollable.innerHeight() >= dialogScrollable[0].scrollHeight) {
                     $rootScope.$broadcast('lx-dialog__scroll-end', activeDialogId);
 
                     dialogScrollable.off('scroll', checkScrollEnd);
 
-                    $timeout(function()
-                    {
+                    $timeout(function () {
                         dialogScrollable.on('scroll', checkScrollEnd);
                     }, 500);
                 }
             }
         }
 
-        function onKeyUp(_event)
-        {
-            if (_event.keyCode == 27 && angular.isDefined(activeDialogId))
-            {
+        function onKeyUp(_event) {
+            if (_event.keyCode == 27 && angular.isDefined(activeDialogId)) {
                 closeDialog(activeDialogId);
             }
 
             _event.stopPropagation();
         }
 
-        function openDialog(_dialogId)
-        {
+        function openDialog(_dialogId) {
             LxDepthService.register();
 
             activeDialogId = _dialogId;
 
             angular.element('body').css(
-            {
-                overflow: 'hidden'
-            });
+                {
+                    overflow: 'hidden'
+                });
+
+
+            if (dialogFilter) {
+                dialogFilter.remove();
+            }
 
             dialogFilter = angular.element('<div/>',
-            {
-                class: 'dialog-filter'
-            });
+                {
+                    class: 'dialog-filter'
+                });
 
             dialogFilter
                 .css('z-index', LxDepthService.getDepth())
                 .appendTo('body');
 
-            if (scopeMap[activeDialogId].autoClose)
-            {
-                dialogFilter.on('click', function()
-                {
+            if (scopeMap[activeDialogId].autoClose) {
+                dialogFilter.on('click', function () {
                     closeDialog(activeDialogId);
                 });
             }
 
-            if (scopeMap[activeDialogId].escapeClose)
-            {
+            if (scopeMap[activeDialogId].escapeClose) {
                 idEventScheduler = LxEventSchedulerService.register('keyup', onKeyUp);
             }
 
@@ -233,8 +213,7 @@
                 .appendTo('body')
                 .show();
 
-            $timeout(function()
-            {
+            $timeout(function () {
                 $rootScope.$broadcast('lx-dialog__open-start', activeDialogId);
 
                 scopeMap[activeDialogId].isOpen = true;
@@ -243,27 +222,23 @@
                 scopeMap[activeDialogId].element.addClass('dialog--is-shown');
             }, 100);
 
-            $timeout(function()
-            {
-                if (scopeMap[activeDialogId].element.find('.dialog__scrollable').length === 0)
-                {
+            $timeout(function () {
+                if (scopeMap[activeDialogId].element.find('.dialog__scrollable').length === 0) {
                     scopeMap[activeDialogId].element.find('.dialog__content').wrap(angular.element('<div/>',
-                    {
-                        class: 'dialog__scrollable'
-                    }));
+                        {
+                            class: 'dialog__scrollable'
+                        }));
                 }
 
                 dialogScrollable = scopeMap[activeDialogId].element.find('.dialog__scrollable');
             }, 200);
 
-            $timeout(function()
-            {
+            $timeout(function () {
                 $rootScope.$broadcast('lx-dialog__open-end', activeDialogId);
             }, 700);
 
-            dialogInterval = $interval(function()
-            {
-                if ( activeDialogId ) {
+            dialogInterval = $interval(function () {
+                if (activeDialogId) {
                     checkDialogHeight(activeDialogId);
                 }
             }, 500);
@@ -271,8 +246,7 @@
             angular.element($window).on('resize', checkDialogHeightOnResize);
         }
 
-        function registerScope(_dialogId, _dialogScope)
-        {
+        function registerScope(_dialogId, _dialogScope) {
             scopeMap[_dialogId] = _dialogScope.lxDialog;
         }
     }
