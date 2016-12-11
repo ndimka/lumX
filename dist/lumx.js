@@ -1064,8 +1064,6 @@
 
             activeDialogId = undefined;
 
-            $interval.cancel(dialogInterval);
-
             $rootScope.$broadcast('lx-dialog__close-start', _dialogId);
 
             if (resizeDebounce)
