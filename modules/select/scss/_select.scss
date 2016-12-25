@@ -326,13 +326,13 @@
         &:before {
             opacity: 1;
             @include mdi-icon('checkbox-blank-outline');
-            color: $black-2;
+            color: $black-4;
         }
 
         &:after {
             opacity: 0;
             @include mdi-icon('checkbox-marked');
-            color: $accent;
+            color: $primary;
         }
 
         &.lx-select-choices__choice--is-selected {
