@@ -2888,6 +2888,7 @@
                 loading: '=?lxLoading',
                 modelToSelection: '&?lxModelToSelection',
                 multiple: '=?lxMultiple',
+                ngClick: '&?',
                 ngChange: '&?',
                 ngDisabled: '=?',
                 ngModel: '=',
@@ -4393,11 +4394,14 @@ angular.module("lumx.select").run(['$templateCache', function(a) { a.put('select
     '            </a>\n' +
     '        </div>\n' +
     '\n' +
-    '        <div class="lx-select-selected" ng-if="lxSelectSelected.parentCtrl.multiple && lxSelectSelected.parentCtrl.getSelectedModel().length">\n' +
+    '        <div class="lx-select-selected"\n' +
+    '             ng-if="lxSelectSelected.parentCtrl.multiple && lxSelectSelected.parentCtrl.getSelectedModel().length">\n' +
     '            <span class="lx-select-selected__tag"\n' +
-    '                  ng-click="lxSelectSelected.removeSelected(selected, $event)"\n' +
-    '                  ng-repeat="selected in lxSelectSelected.parentCtrl.getSelectedModel()"\n' +
-    '                  ng-bind-html="lxSelectSelected.parentCtrl.displaySelected(selected)"></span>\n' +
+    '                  ng-repeat="selected in lxSelectSelected.parentCtrl.getSelectedModel()">\n' +
+    '                <span ng-bind-html="lxSelectSelected.parentCtrl.displaySelected(selected)"\n' +
+    '                      ng-click="lxSelectSelected.parentCtrl.click(selected, $event)"></span>\n' +
+    '                <lx-icon lx-id="close-circle"\n' +
+    '                         ng-click="lxSelectSelected.removeSelected(selected, $event)"></lx-icon></span>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '</div>\n' +

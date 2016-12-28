@@ -66,6 +66,7 @@
                 loading: '=?lxLoading',
                 modelToSelection: '&?lxModelToSelection',
                 multiple: '=?lxMultiple',
+                ngClick: '&?',
                 ngChange: '&?',
                 ngDisabled: '=?',
                 ngModel: '=',

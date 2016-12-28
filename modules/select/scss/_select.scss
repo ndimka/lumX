@@ -216,6 +216,7 @@
         line-height: 20px;
         @include user-select(none);
 
+        /*
         &:after {
             @include mdi;
             @include mdi-icon('close-circle');
@@ -223,6 +224,7 @@
             @include font-size(14px);
             color: $grey-400;
         }
+        */
 
         &:first-child {
             margin-left: 0;
@@ -244,9 +246,15 @@
         .lx-select--is-disabled & {
             color: $black-3;
 
+            [lx-id="close-circle"]{
+                display: none;
+            }
+
+            /*
             &:after {
                 display: none;
             }
+            */
         }
     }
 

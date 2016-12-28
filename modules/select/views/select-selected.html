@@ -11,11 +11,14 @@
             </a>
         </div>
 
-        <div class="lx-select-selected" ng-if="lxSelectSelected.parentCtrl.multiple && lxSelectSelected.parentCtrl.getSelectedModel().length">
+        <div class="lx-select-selected"
+             ng-if="lxSelectSelected.parentCtrl.multiple && lxSelectSelected.parentCtrl.getSelectedModel().length">
             <span class="lx-select-selected__tag"
-                  ng-click="lxSelectSelected.removeSelected(selected, $event)"
-                  ng-repeat="selected in lxSelectSelected.parentCtrl.getSelectedModel()"
-                  ng-bind-html="lxSelectSelected.parentCtrl.displaySelected(selected)"></span>
+                  ng-repeat="selected in lxSelectSelected.parentCtrl.getSelectedModel()">
+                <span ng-bind-html="lxSelectSelected.parentCtrl.displaySelected(selected)"
+                      ng-click="lxSelectSelected.parentCtrl.click(selected, $event)"></span>
+                <lx-icon lx-id="close-circle"
+                         ng-click="lxSelectSelected.removeSelected(selected, $event)"></lx-icon></span>
         </div>
     </div>
 </div>
