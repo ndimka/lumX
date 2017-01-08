@@ -54,6 +54,7 @@
             scope:
             {
                 allowClear: '=?lxAllowClear',
+                autoHide: '=?lxAutoHide',
                 choices: '=?lxChoices',
                 customStyle: '@?lxCustomStyle',
                 displayFilter: '=?lxDisplayFilter',
@@ -84,7 +85,7 @@
 
         function link(scope, element, attrs)
         {
-            var backwardOneWay = ['customStyle', 'choicesClass'];
+            var backwardOneWay = ['customStyle', 'choicesClass', 'autoHide'];
             var backwardTwoWay = ['allowClear', 'choices', 'error', 'loading', 'multiple', 'valid'];
 
             angular.forEach(backwardOneWay, function(attribute)
@@ -508,7 +509,9 @@
 
             if (lxSelectChoices.parentCtrl.multiple)
             {
-                _event.stopPropagation();
+                if ( !lxSelectChoices.parentCtrl.autoHide ){
+                    _event.stopPropagation();
+                }
             }
 
             if (lxSelectChoices.parentCtrl.multiple && isSelected(_choice))
