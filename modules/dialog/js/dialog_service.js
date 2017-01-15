@@ -86,9 +86,9 @@
 
                 if (angular.isDefined(scopeMap[_dialogId])) {
                     scopeMap[_dialogId].element
-                        .hide()
+                        /*.hide()*/
                         .removeClass('dialog--is-fixed')
-                        .appendTo(scopeMap[_dialogId].elementParent);
+                        /*.appendTo(scopeMap[_dialogId].elementParent)*/;
 
                     scopeMap[_dialogId].isOpen = false;
                     $rootScope.$broadcast('lx-dialog__close-end', _dialogId);
