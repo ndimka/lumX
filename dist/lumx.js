@@ -1082,7 +1082,7 @@
                     });
 
                 dialogFilter.remove();
-                dialogFilter = undefined;
+                // dialogFilter = undefined;
                 dialogHeight = undefined;
 
                 if (angular.isDefined(scopeMap[_dialogId])) {
