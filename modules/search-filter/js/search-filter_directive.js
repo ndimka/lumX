@@ -77,7 +77,7 @@
         {
             if (angular.isDefined(lxSearchFilter.closed) && lxSearchFilter.closed && !input.val())
             {
-                $element.animate(
+                $element.velocity(
                 {
                     width: 40
                 },
@@ -128,7 +128,7 @@
         {
             if (angular.isDefined(lxSearchFilter.closed) && lxSearchFilter.closed)
             {
-                $element.animate(
+                $element.velocity(
                 {
                     width: angular.isDefined(lxSearchFilter.width) ? lxSearchFilter.width : 240
                 },

@@ -123,7 +123,7 @@
                 overflow: 'hidden'
             });
 
-            dropdownMenu.animate(
+            dropdownMenu.velocity(
             {
                 width: 0,
                 height: 0,
@@ -199,7 +199,7 @@
                     height: height
                 });
 
-                dropdownMenu.animate(
+                dropdownMenu.velocity(
                 {
                     width: width
                 },
@@ -209,7 +209,7 @@
                     queue: false
                 });
 
-                dropdownMenu.animate(
+                dropdownMenu.velocity(
                 {
                     height: height
                 },

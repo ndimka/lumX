@@ -163,24 +163,24 @@
 
                 if (direction === 'left')
                 {
-                    indicator.animate(
+                    indicator.velocity(
                     {
                         left: indicatorLeft
                     }, animationProperties);
 
-                    indicator.animate(
+                    indicator.velocity(
                     {
                         right: indicatorRight
                     }, animationProperties);
                 }
                 else
                 {
-                    indicator.animate(
+                    indicator.velocity(
                     {
                         right: indicatorRight
                     }, animationProperties);
 
-                    indicator.animate(
+                    indicator.velocity(
                     {
                         left: indicatorLeft
                     }, animationProperties);
