@@ -45,7 +45,6 @@
     {
         "angular": "latest",
         "jquery": "latest",
-        "velocity": "latest",
         "moment": "latest",
         "bourbon": "latest"
     },
