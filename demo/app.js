@@ -190,6 +190,17 @@
                         }
                     }
                 })
+                .state('app.components.chip',
+                {
+                    url: '/chip',
+                    views:
+                    {
+                        'main@':
+                        {
+                            templateUrl: '/includes/modules/chip/chip.html'
+                        }
+                    }
+                })
                 .state('app.components.data-table',
                 {
                     url: '/data-table',
@@ -197,7 +208,9 @@
                     {
                         'main@':
                         {
-                            templateUrl: '/includes/modules/data-table/data-table.html'
+                            templateUrl: '/includes/modules/data-table/data-table.html',
+                            controller: 'DemoDataTableController',
+                            controllerAs: 'vm'
                         }
                     }
                 })
@@ -234,7 +247,9 @@
                     {
                         'main@':
                         {
-                            templateUrl: '/includes/modules/dropdown/dropdown.html'
+                            templateUrl: '/includes/modules/dropdown/dropdown.html',
+                            controller: 'DemoDropdownController',
+                            controllerAs: 'vm'
                         }
                     }
                 })

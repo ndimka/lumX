@@ -4,43 +4,48 @@
 
 // Select
 .lx-select {
-    position: relative;
-    padding-top: $base-spacing-unit * 4;
-    padding-bottom: $base-spacing-unit;
+    &.lx-select--default-style {
+        position: relative;
 
-    &:before,
-    &:after {
-        content: '';
+        .dropdown {
+            display: block;
+        }
     }
 
-    &:before {
-        @include position(absolute, null 0 $base-spacing-unit - 1 0);
-        height: 1px;
+    &.lx-select--default-style.lx-select--view-mode-field {
+        padding-top: $base-spacing-unit * 4;
+        padding-bottom: $base-spacing-unit;
+
+        &:before,
+        &:after {
+            content: '';
+        }
+
+        &:before {
+            @include position(absolute, null 0 $base-spacing-unit - 1 0);
+            height: 1px;
+        }
+
+        &:after {
+            @include position(absolute, null 0 $base-spacing-unit - 2 0);
+            height: 2px;
+            @include transform(scale(0));
+            @include transition-property(transform);
+            @include transition-duration(0.6s);
+            @include transition-timing-function($ease-out-quint);
+        }
     }
 
-    &.lx-select--theme-light:before  {
+    &.lx-select--default-style.lx-select--view-mode-field.lx-select--theme-light:before  {
         border-bottom: 1px solid $black-4;
     }
 
-    &.lx-select--theme-dark:before {
+    &.lx-select--default-style.lx-select--view-mode-field.lx-select--theme-dark:before {
         border-bottom: 1px solid $white-4;
-    }
-
-    &:after {
-        @include position(absolute, null 0 $base-spacing-unit - 2 0);
-        height: 2px;
-        @include transform(scale(0));
-        @include transition-property(transform);
-        @include transition-duration(0.6s);
-        @include transition-timing-function($ease-out-quint);
-    }
-
-    .dropdown {
-        display: block;
     }
 }
 
-.lx-select--is-disabled {
+.lx-select--default-style.lx-select--view-mode-field.lx-select--is-disabled {
     pointer-events: none;
 
     &:before {
@@ -48,14 +53,14 @@
     }
 }
 
-.lx-select--valid {
+.lx-select--default-style.lx-select--view-mode-field.lx-select--valid {
     &:after {
         background-color: $green;
         @include transform(scale(1));
     }
 }
 
-.lx-select--error {
+.lx-select--default-style.lx-select--view-mode-field.lx-select--error {
     &:after {
         background-color: $red;
         @include transform(scale(1));
@@ -68,45 +73,56 @@
 
 // Select label
 .lx-select-label {
-    display: block;
-    @include position(absolute, $base-spacing-unit null null 0);
-    line-height: 32px;
-    pointer-events: none;
-    @include transform(translateY($base-spacing-unit * 3));
-    @include transform-origin(bottom left);
-    @include transition-property(transform, color);
-    @include transition-duration(0.4s);
-    @include transition-timing-function($ease-out-quint);
+    .lx-select--default-style & {
+        display: block;
+        pointer-events: none;
+    }
 
-    .lx-select--is-active.lx-select--fixed-label & {
+    .lx-select--default-style.lx-select--view-mode-field & {
+        @include position(absolute, $base-spacing-unit null null 0);
+        line-height: 32px;
+        @include transform(translateY($base-spacing-unit * 3));
+        @include transform-origin(bottom left);
+        @include transition-property(transform, color);
+        @include transition-duration(0.4s);
+        @include transition-timing-function($ease-out-quint);
+    }
+
+    .lx-select--default-style.lx-select--view-mode-chips & {
+        @include position(absolute, 0 null null 0);
+        line-height: 40px;
+    }
+
+    .lx-select--default-style.lx-select--is-active.lx-select--fixed-label &,
+    .lx-select--default-style.lx-select--is-active.lx-select--view-mode-chips & {
         display: none;
     }
 
-    .lx-select--is-active & {
+    .lx-select--default-style.lx-select--is-active.lx-select--view-mode-field & {
         @include transform(scale(0.75) translateY(0));
     }
 
-    .lx-select--theme-light & {
+    .lx-select--default-style.lx-select--theme-light & {
         color: $black-2;
     }
 
-    .lx-select--theme-dark & {
+    .lx-select--default-style.lx-select--theme-dark & {
         color: $white-2;
     }
 
-    .lx-select--theme-light.lx-select--is-disabled & {
+    .lx-select--default-style.lx-select--theme-light.lx-select--is-disabled & {
         color: $black-3;
     }
 
-    .lx-select--theme-dark.lx-select--is-disabled & {
+    .lx-select--default-style.lx-select--theme-dark.lx-select--is-disabled & {
         color: $white-3;
     }
 
-    .lx-select--valid & {
+    .lx-select--default-style.lx-select--valid & {
         color: $green;
     }
 
-    .lx-select--error & {
+    .lx-select--default-style.lx-select--error & {
         color: $red;
     }
 }
@@ -117,32 +133,49 @@
 
 // Select selected
 .lx-select-selected-wrapper {
-    min-height: 32px;
-    padding-right: $base-spacing-unit * 3;
+    .lx-select--default-style:not(.lx-select--autocomplete) & {
+        padding-right: $base-spacing-unit * 3;
 
-    &:after {
-        @include mdi;
-        @include mdi-icon('menu-down');
-        @include position(absolute, null $base-spacing-unit $base-spacing-unit null);
-        @include font-size(14px);
-        line-height: 16px;
-
-        .lx-select--theme-light & {
-            color: $black-3;
-        }
-
-        .lx-select--theme-dark & {
-            color: $white-3;
+        &:after {
+            @include mdi;
+            @include mdi-icon('menu-down');
+            @include font-size(14px);
         }
     }
 
-    .dropdown--is-open &:after {
+    .lx-select--default-style.lx-select--view-mode-field & {
+        min-height: 32px;
+    }
+
+    .lx-select--default-style.lx-select--view-mode-field:not(.lx-select--autocomplete) &:after {
+        @include position(absolute, null $base-spacing-unit $base-spacing-unit null);
+        line-height: 16px;
+    }
+
+    .lx-select--default-style.lx-select--view-mode-chips & {
+        min-height: 40px;
+    }
+
+    .lx-select--default-style.lx-select--view-mode-chips:not(.lx-select--autocomplete) &:after {
+        @include position(absolute, 0 0 null null);
+        line-height: 40px;
+    }
+
+    .lx-select--default-style.lx-select--theme-light &:after {
+        color: $black-3;
+    }
+
+    .lx-select--default-style.lx-select--theme-dark &:after {
+        color: $white-3;
+    }
+
+    .lx-select--default-style:not(.lx-select--autocomplete) .dropdown--is-open &:after {
         @include mdi-icon('menu-up');
     }
 }
 
 .lx-select-selected {
-    .lx-select--is-unique & {
+    .lx-select--default-style.lx-select--is-unique & {
         &:hover {
             .lx-select-selected__clear {
                 opacity: 1;
@@ -150,102 +183,179 @@
         }
     }
 
-    .lx-select--is-multiple & {
+    .lx-select--default-style.lx-select--is-multiple & {
         @include display(flex);
         @include flex-direction(row);
         @include flex-wrap(wrap);
+    }
+
+    .lx-select--default-style.lx-select--is-multiple.lx-select--view-mode-field & {
         padding: $base-spacing-unit / 2 0;
     }
 }
     
     // Select selected: value
     .lx-select-selected__value {
-        display: block;
-        line-height: 32px;
+        .lx-select--default-style & {
+            display: block;
+            line-height: 32px;
+        }
 
-        .lx-select--theme-light & {
+        .lx-select--default-style.lx-select--theme-light & {
             color: $black-1;
         }
 
-        .lx-select--theme-dark & {
+        .lx-select--default-style.lx-select--theme-dark & {
             color: $white-1;
         }
 
-        .lx-select--theme-light.lx-select--is-disabled & {
+        .lx-select--default-style.lx-select--theme-light.lx-select--is-disabled & {
             color: $black-3;
         }
 
-        .lx-select--theme-dark.lx-select--is-disabled & {
+        .lx-select--default-style.lx-select--theme-dark.lx-select--is-disabled & {
             color: $white-3;
         }
     }
     
     // Select selected: clear
     .lx-select-selected__clear {
-        display: block;
-        @include position(absolute, 0 $base-spacing-unit * 3 null null);
-        opacity: 0;
-        line-height: 32px;
-        @include transition-property(opacity, color);
-        @include transition-duration(0.2s);
+        .lx-select--default-style & {
+            display: block;
+            @include position(absolute, 0 $base-spacing-unit * 3 null null);
+            opacity: 0;
+            line-height: 32px;
+            @include transition-property(opacity, color);
+            @include transition-duration(0.2s);
 
-        .lx-select--theme-light & {
+            &:hover {
+                color: $red-500;
+            }
+        }
+
+        .lx-select--default-style.lx-select--theme-light & {
             color: $black-1;
         }
 
-        .lx-select--theme-dark & {
+        .lx-select--default-style.lx-select--theme-dark & {
             color: $white-1;
-        }
-
-        &:hover {
-            color: $red-500;
         }
     }
     
     // Select selected: value
     .lx-select-selected__tag {
-        @include display(flex);
-        @include flex-direction(row);
-        @include align-items(center);
-        margin: 2px;
-        padding: 0 $base-spacing-unit / 2;
-        border-radius: $base-round;
-        background-color: $grey-200;
-        cursor: pointer;
-        @include font-size(12px);
-        line-height: 20px;
-        @include user-select(none);
-
-        &:after {
-            @include mdi;
-            @include mdi-icon('close-circle');
-            margin-left: $base-spacing-unit / 2;
-            @include font-size(14px);
-            color: $grey-400;
-        }
-
-        &:first-child {
-            margin-left: 0;
-        }
-
-        &:last-child {
-            margin-right: 0;
-        }
-
-        &:hover {
-            background-color: $grey-600;
-            color: $white-1;
+        .lx-select--default-style & {
+            @include display(flex);
+            @include flex-direction(row);
+            @include align-items(center);
+            background-color: $grey-200;
+            cursor: pointer;
+            @include user-select(none);
 
             &:after {
-                color: $white-1;
+                @include mdi;
+                @include mdi-icon('close-circle');
+                color: $grey-400;
+            }
+
+            #{$base-icon-prefix} {
+                margin-right: $base-spacing-unit / 2;
+                color: $black-2;
             }
         }
 
-        .lx-select--is-disabled & {
+        .lx-select--default-style:not(.lx-select--is-disabled) & {
+            &.lx-select-selected__tag--is-active,
+            &:hover {
+                background-color: $grey-600;
+                color: $white-1;
+
+                &:after {
+                    color: $white-1;
+                }
+            }
+        }
+
+        .lx-select--default-style.lx-select--is-disabled & {
+            pointer-events: none;
             color: $black-3;
 
             &:after {
                 display: none;
+            }
+        }
+
+        .lx-select--default-style.lx-select--view-mode-field & {
+            margin: 2px 4px 2px 0;
+            padding: 0 $base-spacing-unit / 2;
+            border-radius: $base-round;
+            @include font-size(11px);
+            line-height: 20px;
+
+            &:after {
+                margin-left: $base-spacing-unit / 2;
+                @include font-size(14px);
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        .lx-select--default-style.lx-select--view-mode-chips & {
+            height: 32px;
+            margin: $base-spacing-unit / 2 $base-spacing-unit $base-spacing-unit / 2 0;
+            padding: 0 $base-spacing-unit 0 $base-spacing-unit * 1.5;
+            border-radius: 16px;
+            @include font-size(14px);
+            line-height: 32px;
+
+            &:after {
+                margin-left: $base-spacing-unit;
+                @include font-size(20px);
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        .lx-select--default-style.lx-select--view-mode-chips.lx-select--is-disabled & {
+            padding-right: $base-spacing-unit * 1.5;
+        }
+    }
+
+    // Select selected: filter
+    .lx-select-selected__filter {
+        @include text-field-reset();
+
+        .lx-select--default-style.lx-select--view-mode-field & {
+            height: 24px;
+            line-height: 24px;
+
+            @include placeholder {
+                @include font-size(14px);
+            }
+        }
+
+        .lx-select--default-style.lx-select--view-mode-chips & {
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .lx-select--default-style.lx-select--theme-light & {
+            color: $black-1;
+
+            @include placeholder {
+                color: $black-2;
+            }
+        }
+
+        .lx-select--default-style.lx-select--theme-dark & {
+            color: $white-1;
+
+            @include placeholder {
+                color: $white-2;
             }
         }
     }
@@ -311,38 +421,25 @@
     .lx-select-choices--is-multiple.lx-select-choices--default-style .lx-select-choices__choice {
         padding-left: 46px;
 
-        &:before,
-        &:after {
+        &:before {
             @include mdi;
+            @include mdi-icon('checkbox-blank-outline');
             @include position(absolute, 0 null null $base-spacing-unit * 2);
             @include size($size-xs 32px);
             @include font-size(18px);
+            color: $black-2;
             line-height: 32px;
             text-align: center;
-            @include transition-property(opacity);
-            @include transition-duration(0.2s);
-        }
-
-        &:before {
-            opacity: 1;
-            @include mdi-icon('checkbox-blank-outline');
-            color: $black-2;
-        }
-
-        &:after {
-            opacity: 0;
-            @include mdi-icon('checkbox-marked');
-            color: $accent;
         }
 
         &.lx-select-choices__choice--is-selected {
             &:before {
-                opacity: 0;
+                @include mdi-icon('check');
             }
+        }
 
-            &:after {
-                opacity: 1;
-            }
+        &.lx-select-choices__choice--is-focus {
+            background-color: $grey-200;
         }
     }
     

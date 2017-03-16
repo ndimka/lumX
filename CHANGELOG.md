@@ -1,5 +1,306 @@
 # Changelog
 
+## v1.4.7:
+
+#### Bug fixes:
+ - dropdown: missing semicolon
+
+
+## v1.4.6:
+
+#### Bug fixes:
+ - dropdown: add depth class at init
+
+
+## v1.4.5:
+
+#### New features:
+ - typography: remove useless line height
+ - dropdown: avoid scrollbar disappear
+ - dropdown: add depth parameter
+
+
+## 1.4.4:
+
+#### Bug fixes:
+ - dropdown: add toggle class only if toggle present
+
+
+## 1.4.3:
+
+#### Bug fixes:
+ - dropdown: register target every height update
+
+
+## 1.4.2:
+*No major changes.*
+
+
+## 1.4.1:
+
+#### New features:
+ - select: replace new value callback by transformer
+ - select: handle down key with autocomplete
+ - chip: add chip component
+ - data-table: add dataTableId param to events to allow multiple data tables in same scope
+ - data-table: expose selectRow and unselectRow to the service api
+
+#### Bug fixes:
+ - select: avoid identical object in autocomplete
+ - select: reset active choice index when needed
+ - select: autocomplete new value are unique
+ - select: fix subheader helper message display condition
+
+#### Breaking changes:
+ - lx-data-table__selected event has a new signature with the first param being the dataTableId
+ - lx-data-table__unselected event has a new signature with the first param being the dataTableId
+ - lx-data-table__sorted event has a new signature with the first param being the dataTableId
+ - lx-data-table__select is now lx-data-table__selected
+ - lx-data-table__unselect is now lx-data-table__unselected
+ - lx-data-table__sort is now lx-data-table__sorted
+
+
+## 1.4.0:
+*No major changes.*
+
+
+## v1.4:
+
+#### New features:
+ - select: add none effect to dropdown if autocomplete
+ - dropdown: add none effect
+ - select: enhance tag style
+ - select: allow to remove selected value with backspace key
+ - select: display helper message if no choices
+ - select: add possibility to add new values
+ - select: remove arrow icon if autocomplete
+ - select: bind key events with autocomplete option
+ - select: add autocomplete option
+ - select: add chips view mode
+
+#### Bug fixes:
+ - dropdown: fix dropdown menu position
+ - select: fix subheader icon style in tags
+ - select: fix filtered choice list for ajax mode
+ - select: handle with theme and disabled style
+ - select: fix helper message condition
+
+
+## v1.3.5:
+*No major changes.*
+
+
+## v1.3.4:
+*No major changes.*
+
+
+## v1.3.3:
+*No major changes.*
+
+
+## v1.3.2:
+
+#### New features:
+ - data-table: add service to select / unselect all rows
+
+#### Bug fixes:
+ - data-table: prevent row select if data-table is not selectable
+
+
+## v1.3.1:
+*No major changes.*
+
+
+## v1.3.0:
+
+#### Bug fixes:
+ - data-table: remove useless css param
+
+
+## v1.2.9:
+
+#### New features:
+ - data-table: add layout options (thumbnail and border)
+
+
+## v1.2.8:
+
+#### New features:
+ - data-table: add possiblity to format data
+ - data-table: support sorting
+ - data-table: make a directive
+
+#### Bug fixes:
+ - tooltip: check for undefined inside the timeout
+ - tooltip: only remove if defined
+
+
+## v1.2.7:
+
+#### Bug fixes:
+ - dialog: only process closing if dialog is really opened
+
+
+## v1.2.6:
+
+#### New features:
+ - dropdown: add no scroll to body only if dropdown menu has overflow
+
+
+## v1.2.5:
+
+#### Bug fixes:
+ - dialog: close dialog on destroy
+
+
+## v1.2.4:
+
+#### Bug fixes:
+ - dialog: listen to broadcast from directive scope
+
+
+## v1.2.3:
+
+#### Bug fixes:
+ - tooltip: update text and position on change
+ - dialog: append dialog to its orginal parent on close
+ - dropdown: check if dropdown is open before close on destroy
+
+
+## v1.2.2:
+
+#### New features:
+ - dialog: add possibility to define sizes
+
+
+## v1.2.1:
+
+#### New features:
+ - select: enhance select multiple style
+ - select: add possibility to set custom style for selected and choices
+
+#### Breaking changes:
+ - Before, custom style parameter applied to select choices only.
+ - Now, custom style parameter applies to the whole select ans choices
+ - custom style parameter applies to choices only.
+
+
+## v1.2.0:
+
+#### New features:
+ - select: use custom style to disable all select styles
+
+#### Bug fixes:
+ - select: fix style
+ - dropdown: don't use replace in directive
+
+
+## v1.1.9:
+
+#### New features:
+ - dropdown: add a close method in service
+
+#### Bug fixes:
+ - dropdown: do not open an already opened dropdown
+
+
+## v1.1.8:
+
+#### Bug fixes:
+ - dropdown: close active dropdown before dropdown open in service
+ - dropdown: correctly generate dropdown uuid
+ - dropdown: enhance the way of handle dropdowns
+
+
+## v1.1.7:
+
+#### New features:
+ - dropdown: add possibility to open a dropdown programmatically
+ - dropdown: use a service to handle dropdown close
+
+
+## v1.1.6:
+
+#### New features:
+ - dropdown: add body hidden overflow when dropdown is open
+
+#### Bug fixes:
+ - icon: fix icon style following mdi update
+ - typo
+
+
+## v1.1.5:
+
+#### New features:
+ - dialog: add round borders
+
+#### Bug fixes:
+ - button: fix green button typo color
+
+
+## v1.1.4:
+
+#### New features:
+ - dropdown: add center position
+
+
+## v1.1.3:
+*No major changes.*
+
+
+## v1.1.2:
+
+#### New features:
+ - dropdown: add fade effect
+
+#### Bug fixes:
+ - dropdown: fix dropdown toggle on hover
+
+
+## v1.1.1:
+
+#### Bug fixes:
+ - button: fix font weight
+
+
+## v1.1.0:
+*No major changes.*
+
+
+## v1.1:
+
+#### Bug fixes:
+ - button: correctly set button font color according to background color
+
+
+## v1.0.9:
+
+#### Bug fixes:
+ - dropdown: fix dropdown delay
+
+
+## v1.0.8:
+
+#### New features:
+ - dropdown: add hover-delay and offset parameters
+
+
+## v1.0.7:
+
+#### New features:
+ - dropdown: add possibility to toggle dropdown on hover event
+
+#### Bug fixes:
+ - date picker: remove unnecessary init method calls
+ - date picker: watch ng-model change to init the calendar
+
+
+## v1.0.6:
+
+#### New features:
+ - tabs: display tabs pane in ng-if instead of ng-show
+
+
 ## v1.0.5:
 
 #### New features:
