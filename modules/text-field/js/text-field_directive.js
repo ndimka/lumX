@@ -142,13 +142,13 @@
         {
             if (!hasValue())
             {
-                $scope.$apply(function()
+                $scope.$evalAsync(function()
                 {
                     lxTextField.isActive = false;
                 });
             }
 
-            $scope.$apply(function()
+            $scope.$evalAsync(function()
             {
                 lxTextField.isFocus = false;
             });
@@ -164,11 +164,12 @@
 
         function focusInput()
         {
-            $scope.$apply(function()
+            $scope.$evalAsync(function()
             {
                 lxTextField.isActive = true;
                 lxTextField.isFocus = true;
             });
+
         }
 
         function hasValue()
