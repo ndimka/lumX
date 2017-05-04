@@ -178,7 +178,7 @@ gulp.task('dist:css', ['scss:paths'], function()
         {
             includePaths: ['libs/bourbon/app/assets/stylesheets/', 'libs/mdi/scss/']
         }))
-        //.pipe(plugins.replace(/\.\.\/fonts/g, './fonts'))
+        // .pipe(plugins.replace(/\.\.\/fonts/g, './fonts'))
         .pipe(plugins.minifyCss(
         {
             keepSpecialComments: 0
